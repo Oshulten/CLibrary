@@ -20,15 +20,15 @@ typedef enum {
     CYCLICAL
 } InterpolationType;
 
-Vector createVector(int dimension, ...);
+Vector createVector(const int dimension, double elements[]);
 void printVector(Vector vector);
 void freeVector(Vector vector);
 Vector copyVector(Vector vector);
-
-Vector translateVector(Vector vector, Vector translation);
-Vector dilateVector(Vector vector, Vector dilation);
-
-Vector operateOnVectors(Operation operation, int count, ...);
-Vector interpolateVectors(double factor, InterpolationType interpolationType, int count, ...);
+//
+// Vector translateVector(Vector vector, Vector translation);
+// Vector dilateVector(Vector vector, Vector dilation);
+//
+// Vector operateOnVectors(Operation operation, int count, Vector vectors[]);
+// Vector interpolateVectors(double factor, InterpolationType interpolationType, int count, Vector vectors[]);
 
 #endif //VECTOR_H
