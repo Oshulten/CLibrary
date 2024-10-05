@@ -10,16 +10,18 @@ typedef struct {
     int dimension;
 } Vector;
 
-Vector createVector(const int dimension, ...);
-void printVector(const Vector vector);
-void freeVector(const Vector vector);
+typedef enum {
+    ADD,
+    MULTIPLY
+} Operation;
 
-Vector addVectors(const int count, ...);
-Vector multiplyVectors(const int count, ...);
-Vector translateVector(const Vector vector, const Vector translation);
-Vector dilateVector(const Vector vector, const Vector dilation);
+Vector createVector(int dimension, ...);
+void printVector(Vector vector);
+void freeVector(Vector vector);
 
-Vector copyVector(const Vector vector);
-Vector interpolateVectors(const double factor, const int count, ...);
+Vector operateOnVectors(Operation operation, int count, ...);
+
+Vector copyVector(Vector vector);
+Vector interpolateVectors(double factor, int count, ...);
 
 #endif //VECTOR_H

@@ -60,6 +60,53 @@ void freeVector(const Vector vector) {
     free(vector.elements);
 }
 
+Vector operateOnVectors(const Operation operation, const int count, ...) {
+    va_list args;
+    va_start(args, count);
+
+    Vector vectors[count];
+
+    for (int i = 0; i < count; i++) {
+        Vector vector = va_arg(args, Vector);
+        vectors[i].dimension = vector.dimension;
+        vectors[i].elements = vector.elements;
+    }
+
+    int minVectorDimension = INT_MAX;
+    for (int i = 0; i < count; i++) {
+        minVectorDimension = (vectors[i].dimension < minVectorDimension)
+                                 ? vectors[i].dimension
+                                 : minVectorDimension;
+    }
+
+    Vector result = {
+        .elements = calloc(minVectorDimension, sizeof(double)),
+        .dimension = minVectorDimension
+    };
+
+    for (int i = 0; i < minVectorDimension; i++) {
+        result.elements[i] = operation;
+        for (int j = 0; j < count; j++) {
+            switch (operation) {
+                case ADD:
+                    result.elements[i] += vectors[j].elements[i];
+                break;
+
+                case MULTIPLY:
+                    result.elements[i] *= vectors[j].elements[i];
+                break;
+
+                default:
+                    break;
+            }
+        }
+    }
+
+    va_end(args);
+
+    return result;
+}
+
 Vector copyVector(const Vector vector) {
     const Vector copy = {
         .elements = calloc(vector.dimension, sizeof(double)),
@@ -71,13 +118,6 @@ Vector copyVector(const Vector vector) {
     }
 
     return copy;
-}
-
-Vector transformVector(const Vector vector, const scalarTransformation transformation) {
-    for (int i = 0; i < vector.dimension; i++) {
-        vector.elements[i] = transformation(vector.elements[i]);
-    }
-    return vector;
 }
 
 Vector interpolateVectors(const double factor, const int count, ...) {
