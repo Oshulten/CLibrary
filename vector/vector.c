@@ -4,7 +4,7 @@
 
 #include "vector.h"
 
-#include <math.h>
+#include <tgmath.h>
 #include <stdarg.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -121,21 +121,65 @@ Vector copyVector(const Vector vector) {
     return copy;
 }
 
-Vector translateVector(Vector vector, Vector translation) {
+Vector translateVector(const Vector vector, const Vector translation) {
     for (int i = 0; i < vector.dimension; i++) {
         vector.elements[i] += translation.elements[(int)fmin(i, translation.dimension-1)];
     }
     return vector;
 }
 
-Vector dilateVector(Vector vector, Vector dilation) {
+Vector dilateVector(const Vector vector, const Vector dilation) {
     for (int i = 0; i < vector.dimension; i++) {
         vector.elements[i] *= dilation.elements[(int)fmin(i, dilation.dimension-1)];
     }
     return vector;
 }
 
+void vectorDimensionsMinMax(const Vector *vectors, const int count, int *min, int *max) {
+    *min = INT_MAX;
+    *max = 0;
+    for (int i = 0; i < count; i++) {
+        *min = vectors[i].dimension < *min
+                                 ? vectors[i].dimension
+                                 : *min;
+        *max = vectors[i].dimension > *max
+                                 ? vectors[i].dimension
+                                 : *max;
+    }
+}
 
+bool approximateEqual(const double value, const double comparisonValue, const double epsilon) {
+    return abs(value - comparisonValue) <= epsilon;
+}
+
+bool allEqual(const int count, const int values[]) {
+    for (int i = 1; i < count; i++) {
+        if (values[i] != values[0])
+            return false;
+    }
+    return true;
+}
+
+Vector blendVectorsElementwise(const Vector blendVector, const Vector vector1, const Vector vector2) {
+    const Vector vectors[] = { blendVector, vector1, vector2 };
+
+    int minVectorDimension, maxVectorDimension;
+    vectorDimensionsMinMax(vectors, 3, &minVectorDimension, &maxVectorDimension);
+
+    const Vector result = {
+        .elements = calloc(maxVectorDimension, sizeof(double)),
+        .dimension = maxVectorDimension
+    };
+
+    for (int i = 0; i < maxVectorDimension; i++) {
+        const double blendFactor = blendVector.elements[(int)fmin(i, blendVector.dimension-1)];
+        const double firstValue = vector1.elements[(int)fmin(i, vector1.dimension-1)];
+        const double secondValue = vector2.elements[(int)fmin(i, vector2.dimension-1)];
+        result.elements[i] = (1.0-blendFactor) * firstValue + blendFactor * secondValue;
+    }
+
+    return result;
+}
 
 Vector interpolateVectors(const double factor, const int count, ...) {
     va_list args;
@@ -149,17 +193,15 @@ Vector interpolateVectors(const double factor, const int count, ...) {
         vectors[i].elements = vector.elements;
     }
 
-    int minVectorDimension = INT_MAX;
-    for (int i = 0; i < count; i++) {
-        minVectorDimension = vectors[i].dimension < minVectorDimension
-                                 ? vectors[i].dimension
-                                 : minVectorDimension;
-    }
+    int minVectorDimension, maxVectorDimension;
+    vectorDimensionsMinMax(vectors, count, &minVectorDimension, &maxVectorDimension);
 
     const Vector interpolation = {
         .elements = calloc(minVectorDimension, sizeof(double)),
         .dimension = minVectorDimension
     };
+
+    const double factorDelta = 1.0 / count;
 
     for (int i = 0; i < minVectorDimension; i++) {
         double result = 0;
