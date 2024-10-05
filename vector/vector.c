@@ -12,11 +12,8 @@
 #include <string.h>
 
 Vector createVector(const int dimension, double elements[]) {
-    for (int i = 0; i < dimension; i++) {
-        printf("\n%f", elements[i]);
-    }
     const Vector vector = {
-        .elements = elements,
+        .elements = calloc(dimension, sizeof(double)),
         .dimension = dimension
     };
 
