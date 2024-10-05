@@ -129,7 +129,10 @@ Vector translateVector(Vector vector, Vector translation) {
 }
 
 Vector dilateVector(Vector vector, Vector dilation) {
-
+    for (int i = 0; i < vector.dimension; i++) {
+        vector.elements[i] *= dilation.elements[(int)fmin(i, dilation.dimension-1)];
+    }
+    return vector;
 }
 
 
