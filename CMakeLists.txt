@@ -3,4 +3,6 @@ project(CLibraries C)
 
 set(CMAKE_C_STANDARD 23)
 
-add_executable(CLibraries main.c)
+add_executable(CLibraries main.c
+        vector/vector.c
+        vector/vector.h)
