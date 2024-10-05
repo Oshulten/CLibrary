@@ -5,7 +5,9 @@
 #include "vector.h"
 
 #include <stdarg.h>
+#include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 Vector createVector(const int dimension, ...) {
     va_list args;
@@ -22,3 +24,35 @@ Vector createVector(const int dimension, ...) {
 
     return vector;
 }
+
+void printVector(const Vector vector) {
+    constexpr int DIGITS_PER_ELEMENT = 8;
+
+    char *printString = calloc(
+        vector.dimension * (2 + DIGITS_PER_ELEMENT),
+        sizeof(char)
+    );
+
+    for (int i = 0; i < vector.dimension; i++) {
+        const bool isLast = (i == vector.dimension - 1);
+
+        const auto valueString = (char *) calloc(
+            DIGITS_PER_ELEMENT + isLast * 2,
+            sizeof(char)
+        );
+
+        sprintf(
+            valueString,
+            isLast ? "%f" : "%f, ",
+            vector.elements[i]
+        );
+
+        strncat(printString, valueString, DIGITS_PER_ELEMENT + 2);
+        free(valueString);
+    }
+
+    printf("(%s)\n", printString);
+
+    free(printString);
+}
+

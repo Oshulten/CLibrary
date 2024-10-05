@@ -8,7 +8,7 @@ bool approximateEqual(const double value, const double comparisonValue, const do
 }
 
 int main(void) {
-    const Vector vector = createVector(3, 1.0, 2, 3);
-    printf("%f %f %f", vector.elements[0], vector.elements[1], vector.elements[2]);
+    const Vector vector = createVector(3, 1.0, 2.0, 3.0);
+    printVector(vector);
     return 0;
 }
