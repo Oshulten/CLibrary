@@ -160,8 +160,8 @@ bool allEqual(const int count, const int values[]) {
     return true;
 }
 
-Vector blendVectorsElementwise(const Vector blendVector, const Vector vector1, const Vector vector2) {
-    const Vector vectors[] = { blendVector, vector1, vector2 };
+Vector blendVectorsElementwise(const Vector blendVector, const Vector firstVector, const Vector secondVector) {
+    const Vector vectors[] = { blendVector, firstVector, secondVector };
 
     int minVectorDimension, maxVectorDimension;
     vectorDimensionsMinMax(vectors, 3, &minVectorDimension, &maxVectorDimension);
@@ -173,15 +173,15 @@ Vector blendVectorsElementwise(const Vector blendVector, const Vector vector1, c
 
     for (int i = 0; i < maxVectorDimension; i++) {
         const double blendFactor = blendVector.elements[(int)fmin(i, blendVector.dimension-1)];
-        const double firstValue = vector1.elements[(int)fmin(i, vector1.dimension-1)];
-        const double secondValue = vector2.elements[(int)fmin(i, vector2.dimension-1)];
-        result.elements[i] = (1.0-blendFactor) * firstValue + blendFactor * secondValue;
+        const double firstValue = firstVector.elements[(int)fmin(i, firstVector.dimension-1)];
+        const double secondValue = secondVector.elements[(int)fmin(i, secondVector.dimension-1)];
+        result.elements[i] = (1.0 - blendFactor)*firstValue + blendFactor*secondValue;
     }
 
     return result;
 }
 
-Vector interpolateVectors(const double factor, const int count, ...) {
+Vector interpolateVectors(const double factor, InterpolationType interpolationType, const int count, ...) {
     va_list args;
     va_start(args, count);
 
@@ -193,26 +193,23 @@ Vector interpolateVectors(const double factor, const int count, ...) {
         vectors[i].elements = vector.elements;
     }
 
+    va_end(args);
+
     int minVectorDimension, maxVectorDimension;
     vectorDimensionsMinMax(vectors, count, &minVectorDimension, &maxVectorDimension);
 
-    const Vector interpolation = {
-        .elements = calloc(minVectorDimension, sizeof(double)),
-        .dimension = minVectorDimension
+    const double factorDelta = 1.0 / (count - 1);
+
+    const int lowerIndex = floor(factor / factorDelta);
+    const double normalizedFactor = (factor / factorDelta) - lowerIndex;
+
+    const Vector blendVector = {
+        .elements = calloc(1, sizeof(double)),
+        .dimension = 1
     };
 
-    const double factorDelta = 1.0 / count;
+    blendVector.elements = { factor };
 
-    for (int i = 0; i < minVectorDimension; i++) {
-        double result = 0;
-        for (int j = 0; j < count; j++) {
-            result += factor * vectors[j].elements[i];
-        }
-        interpolation.elements[i] = result;
-    }
-
-    va_end(args);
-
-    return interpolation;
+    return blendVectorsElementwise(blendVector, vectors[lowerIndex], vectors[lowerIndex+1]);
 }
 

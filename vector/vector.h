@@ -8,14 +8,7 @@
 typedef struct {
     double* elements;
     int dimension;
-    bool null;
 } Vector;
-
-const Vector nullVector = {
-    .elements = nullptr,
-    .dimension = 0,
-    null = true
-};
 
 typedef enum {
     ADD,
