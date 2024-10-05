@@ -4,6 +4,7 @@
 
 #include "vector.h"
 
+#include <float.h>
 #include <tgmath.h>
 #include <stdarg.h>
 #include <stdio.h>
@@ -181,7 +182,7 @@ Vector blendVectorsElementwise(const Vector blendVector, const Vector firstVecto
     return result;
 }
 
-Vector interpolateVectors(const double factor, InterpolationType interpolationType, int count, ...) {
+Vector interpolateVectors(const double factor, const InterpolationType interpolationType, int count, ...) {
     va_list args;
     va_start(args, count);
 
@@ -204,16 +205,16 @@ Vector interpolateVectors(const double factor, InterpolationType interpolationTy
     vectorDimensionsMinMax(vectors, count, &minVectorDimension, &maxVectorDimension);
 
     const double factorDelta = 1.0 / (count - 1);
-
-    const int lowerIndex = floor(factor / factorDelta);
-    const double normalizedFactor = (factor / factorDelta) - lowerIndex;
+    const double lessThanOneFactor = factor - 0.1E-10;
+    const int lowerIndex = floor(lessThanOneFactor / factorDelta);
+    const double normalizedFactor = (lessThanOneFactor / factorDelta) - lowerIndex;
 
     const Vector blendVector = {
         .elements = calloc(1, sizeof(double)),
         .dimension = 1
     };
 
-    blendVector.elements = { factor };
+    blendVector.elements[0] = factor;
 
     return blendVectorsElementwise(blendVector, vectors[lowerIndex], vectors[lowerIndex+1]);
 }

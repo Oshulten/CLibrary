@@ -29,6 +29,6 @@ Vector translateVector(Vector vector, Vector translation);
 Vector dilateVector(Vector vector, Vector dilation);
 
 Vector operateOnVectors(Operation operation, int count, ...);
-Vector interpolateVectors(double factor, int count, ...);
+Vector interpolateVectors(double factor, InterpolationType interpolationType, int count, ...);
 
 #endif //VECTOR_H
