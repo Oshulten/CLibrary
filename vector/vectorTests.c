@@ -21,7 +21,7 @@ bool arraysAreEqual(const int count, const double array[count], const double com
     return true;
 }
 
-void runTest(char *testTitle, const int testCount, const char* testTitles[], const bool testResults[]) {
+void printTest(char *testTitle, const int testCount, const char* testTitles[], const bool testResults[]) {
     printf("Test: %s\n", testTitle);
     int passingTests = 0;
     for (int i = 0; i < testCount; i++) {
@@ -35,13 +35,13 @@ void shouldCreateVectorWithCorrectElementsAndDimension(const int dimension, cons
     char *testTitles[] = { "Elements are correct", "Dimension is correct" };
 
     Vector v = createVector(dimension, elements);
-    printVector(v);
+
     bool testResults[] = {
         arraysAreEqual(3, elements, v.elements),
         v.dimension == dimension
     };
 
-    runTest("Should create vector with correct elements and dimension", 2, testTitles, testResults);
+    printTest("Should create vector with correct elements and dimension", 2, testTitles, testResults);
 
     freeVector(v);
 }
