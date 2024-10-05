@@ -181,16 +181,21 @@ Vector blendVectorsElementwise(const Vector blendVector, const Vector firstVecto
     return result;
 }
 
-Vector interpolateVectors(const double factor, InterpolationType interpolationType, const int count, ...) {
+Vector interpolateVectors(const double factor, InterpolationType interpolationType, int count, ...) {
     va_list args;
     va_start(args, count);
 
-    Vector vectors[count];
+    Vector vectors[interpolationType == LINEAR ? count : count + 1];
 
     for (int i = 0; i < count; i++) {
         const Vector vector = va_arg(args, Vector);
         vectors[i].dimension = vector.dimension;
         vectors[i].elements = vector.elements;
+    }
+
+    if (interpolationType == CYCLICAL) {
+        vectors[count] = vectors[0];
+        count++;
     }
 
     va_end(args);
