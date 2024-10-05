@@ -56,3 +56,16 @@ void printVector(const Vector vector) {
     free(printString);
 }
 
+Vector copyVector(const Vector vector) {
+    const Vector copy = {
+        .elements = calloc(vector.dimension, sizeof(double)),
+        .dimension = vector.dimension
+    };
+
+    for (int i = 0; i < vector.dimension; i++) {
+        copy.elements[i] = vector.elements[i];
+    }
+
+    return copy;
+}
+

@@ -12,5 +12,6 @@ typedef struct {
 
 Vector createVector(const int dimension, ...);
 void printVector(const Vector vector);
+Vector copyVector(const Vector vector);
 
 #endif //VECTOR_H
