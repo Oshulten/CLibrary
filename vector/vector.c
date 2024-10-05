@@ -4,6 +4,7 @@
 
 #include "vector.h"
 
+#include <math.h>
 #include <stdarg.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -67,7 +68,7 @@ Vector operateOnVectors(const Operation operation, const int count, ...) {
     Vector vectors[count];
 
     for (int i = 0; i < count; i++) {
-        Vector vector = va_arg(args, Vector);
+        const Vector vector = va_arg(args, Vector);
         vectors[i].dimension = vector.dimension;
         vectors[i].elements = vector.elements;
     }
@@ -79,7 +80,7 @@ Vector operateOnVectors(const Operation operation, const int count, ...) {
                                  : minVectorDimension;
     }
 
-    Vector result = {
+    const Vector result = {
         .elements = calloc(minVectorDimension, sizeof(double)),
         .dimension = minVectorDimension
     };
@@ -120,6 +121,19 @@ Vector copyVector(const Vector vector) {
     return copy;
 }
 
+Vector translateVector(Vector vector, Vector translation) {
+    for (int i = 0; i < vector.dimension; i++) {
+        vector.elements[i] += translation.elements[(int)fmin(i, translation.dimension-1)];
+    }
+    return vector;
+}
+
+Vector dilateVector(Vector vector, Vector dilation) {
+
+}
+
+
+
 Vector interpolateVectors(const double factor, const int count, ...) {
     va_list args;
     va_start(args, count);
@@ -134,7 +148,7 @@ Vector interpolateVectors(const double factor, const int count, ...) {
 
     int minVectorDimension = INT_MAX;
     for (int i = 0; i < count; i++) {
-        minVectorDimension = (vectors[i].dimension < minVectorDimension)
+        minVectorDimension = vectors[i].dimension < minVectorDimension
                                  ? vectors[i].dimension
                                  : minVectorDimension;
     }
