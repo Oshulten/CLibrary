@@ -13,5 +13,6 @@ typedef struct {
 Vector createVector(const int dimension, ...);
 void printVector(const Vector vector);
 Vector copyVector(const Vector vector);
+Vector interpolateVectors(const double factor, const int count, ...);
 
 #endif //VECTOR_H

@@ -69,3 +69,40 @@ Vector copyVector(const Vector vector) {
     return copy;
 }
 
+Vector interpolateVectors(const double factor, const int count, ...) {
+    va_list args;
+    va_start(args, count);
+
+    Vector vectors[count];
+
+    for (int i = 0; i < count; i++) {
+        const Vector vector = va_arg(args, Vector);
+        vectors[i].dimension = vector.dimension;
+        vectors[i].elements = vector.elements;
+    }
+
+    int minVectorDimension = INT_MAX;
+    for (int i = 0; i < count; i++) {
+        minVectorDimension = (vectors[i].dimension < minVectorDimension)
+                                 ? vectors[i].dimension
+                                 : minVectorDimension;
+    }
+
+    const Vector interpolation = {
+        .elements = calloc(minVectorDimension, sizeof(double)),
+        .dimension = minVectorDimension
+    };
+
+    for (int i = 0; i < minVectorDimension; i++) {
+        double result = 0;
+        for (int j = 0; j < count; j++) {
+            result += factor * vectors[j].elements[i];
+        }
+        interpolation.elements[i] = result;
+    }
+
+    va_end(args);
+
+    return interpolation;
+}
+
