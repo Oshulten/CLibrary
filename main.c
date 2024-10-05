@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <tgmath.h>
-
 #include "vector/vector.h"
 
 bool approximateEqual(const double value, const double comparisonValue, const double epsilon) {

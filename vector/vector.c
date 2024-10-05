@@ -56,6 +56,10 @@ void printVector(const Vector vector) {
     free(printString);
 }
 
+void freeVector(const Vector vector) {
+    free(vector.elements);
+}
+
 Vector copyVector(const Vector vector) {
     const Vector copy = {
         .elements = calloc(vector.dimension, sizeof(double)),
@@ -67,6 +71,13 @@ Vector copyVector(const Vector vector) {
     }
 
     return copy;
+}
+
+Vector transformVector(const Vector vector, const scalarTransformation transformation) {
+    for (int i = 0; i < vector.dimension; i++) {
+        vector.elements[i] = transformation(vector.elements[i]);
+    }
+    return vector;
 }
 
 Vector interpolateVectors(const double factor, const int count, ...) {
