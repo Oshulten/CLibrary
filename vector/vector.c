@@ -4,8 +4,21 @@
 
 #include "vector.h"
 
-#include <stdio.h>
+#include <stdarg.h>
+#include <stdlib.h>
 
-void hello() {
-    printf("hello");
+Vector createVector(const int dimension, ...) {
+    va_list args;
+    va_start(args, dimension);
+
+    const Vector vector = {
+        .elements = calloc(dimension, sizeof(double)),
+        .dimension = dimension
+    };
+
+    for (int i = 0; i < dimension; i++) {
+        vector.elements[i] = va_arg(args, double);
+    }
+
+    return vector;
 }

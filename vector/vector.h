@@ -5,8 +5,11 @@
 #ifndef VECTOR_H
 #define VECTOR_H
 
-#define VCONST 1
+typedef struct {
+    double* elements;
+    int dimension;
+} Vector;
 
-void hello();
+Vector createVector(const int dimension, ...);
 
 #endif //VECTOR_H
