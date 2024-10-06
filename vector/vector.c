@@ -135,13 +135,13 @@ Vector translateVector(const Vector vector, const Vector translation) {
     return vector;
 }
 
-// Vector dilateVector(const Vector vector, const Vector dilation) {
-//     for (int i = 0; i < vector.dimension; i++) {
-//         vector.elements[i] *= dilation.elements[(int)fmin(i, dilation.dimension-1)];
-//     }
-//     return vector;
-// }
-//
+Vector dilateVector(const Vector vector, const Vector dilation) {
+    for (int i = 0; i < vector.dimension; i++) {
+        vector.elements[i] *= dilation.elements[(int)fmin(i, dilation.dimension-1)];
+    }
+    return vector;
+}
+
 // void vectorDimensionsMinMax(const Vector *vectors, const int count, int *min, int *max) {
 //     *min = INT_MAX;
 //     *max = 0;

@@ -30,10 +30,8 @@ void freeVector(Vector vector);
 bool vectorsAreEqual(const Vector firstVector, const Vector secondVector);
 Vector copyVector(Vector vector);
 Vector translateVector(const Vector vector, const Vector translation);
-//
-// Vector translateVector(Vector vector, Vector translation);
-// Vector dilateVector(Vector vector, Vector dilation);
-//
+Vector dilateVector(const Vector vector, const Vector translation);
+
 // Vector operateOnVectors(Operation operation, int count, Vector vectors[]);
 // Vector interpolateVectors(double factor, InterpolationType interpolationType, int count, Vector vectors[]);
 

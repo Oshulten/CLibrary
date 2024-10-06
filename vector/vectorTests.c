@@ -82,6 +82,20 @@ bool testTranslateVector(const Vector vector, const Vector translation, const Ve
     return testResults[0];
 }
 
+bool testDilateVector(const Vector vector, const Vector dilation, const Vector result) {
+    char *testTitles[] = { "Vectors are equal" };
+
+    const bool testResults[] = {
+        vectorsAreEqual(
+            dilateVector(vector, dilation),
+            result)
+    };
+
+    printTest("dilateVector", 1, testTitles, testResults);
+
+    return testResults[0];
+}
+
 void runVectorTests() {
     printf("\nVector Tests\n-----\n");
 
@@ -122,10 +136,25 @@ void runVectorTests() {
         testTranslateVector(
             createVector(3, (double[]){0.0, 0.0, 0.0}),
             createVector(5, (double[]){1.0, 1.0, 1.0, 1.0, 1.0}),
-            createVector(3, (double[]){1.0, 1.0, 1.0}))
+            createVector(3, (double[]){1.0, 1.0, 1.0})),
+
+        testDilateVector(
+            createVector(2, (double[]){1.0, 1.0}),
+            createVector(2, (double[]){-1.0, -1.0}),
+            createVector(2, (double[]){-1.0, -1.0})),
+
+        testDilateVector(
+            createVector(3, (double[]){1.0, 1.0, 1.0}),
+            createVector(1, (double[]){0.0}),
+            createVector(3, (double[]){0.0, 0.0, 0.0})),
+
+        testDilateVector(
+            createVector(3, (double[]){1.0, 1.0, 1.0}),
+            createVector(5, (double[]){1.0, 2.0, 3.0, 4.0, 5.0}),
+            createVector(3, (double[]){1.0, 2.0, 3.0}))
     };
 
-    size_t numberOfTests = sizeof(testResults) / sizeof(bool);
+    constexpr size_t numberOfTests = sizeof(testResults) / sizeof(bool);
 
     size_t positiveResults = 0;
     for (int i = 0; i < numberOfTests; i++)
