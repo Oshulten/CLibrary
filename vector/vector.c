@@ -175,39 +175,34 @@ Vector blendVectorsElementwise(const Vector blendVector, const Vector firstVecto
 
     return result;
 }
-//
-// Vector interpolateVectors(const double factor, const InterpolationType interpolationType, int count, Vector inputVectors[]) {
-//     va_list args;
-//     va_start(args, count);
-//
-//     Vector vectors[interpolationType == LINEAR ? count : count + 1];
-//
-//     for (int i = 0; i < count; i++) {
-//         vectors[i] = inputVectors[i];
-//     }
-//
-//     if (interpolationType == CYCLICAL) {
-//         vectors[count] = vectors[0];
-//         count++;
-//     }
-//
-//     va_end(args);
-//
-//     int minVectorDimension, maxVectorDimension;
-//     vectorDimensionsMinMax(vectors, count, &minVectorDimension, &maxVectorDimension);
-//
-//     const double factorDelta = 1.0 / (count - 1);
-//     const double lessThanOneFactor = factor - 0.1E-10;
-//     const int lowerIndex = floor(lessThanOneFactor / factorDelta);
-//     const double normalizedFactor = (lessThanOneFactor / factorDelta) - lowerIndex;
-//
-//     const Vector blendVector = {
-//         .elements = calloc(1, sizeof(double)),
-//         .dimension = 1
-//     };
-//
-//     blendVector.elements[0] = factor;
-//
-//     return blendVectorsElementwise(blendVector, vectors[lowerIndex], vectors[lowerIndex+1]);
-// }
-//
+
+Vector interpolateVectors(const double factor, const InterpolationType interpolationType, int count, const Vector inputVectors[]) {
+    Vector vectors[interpolationType == LINEAR ? count : count + 1];
+
+    for (int i = 0; i < count; i++) {
+        vectors[i] = inputVectors[i];
+    }
+
+    if (interpolationType == CYCLICAL) {
+        vectors[count] = vectors[0];
+        count++;
+    }
+
+    int minVectorDimension, maxVectorDimension;
+    vectorDimensionsMinMax(count, vectors, &minVectorDimension, &maxVectorDimension);
+
+    const double factorDelta = 1.0 / (count - 1);
+    const double lessThanOneFactor = factor - 0.1E-10;
+    const int lowerIndex = floor(lessThanOneFactor / factorDelta);
+    const double normalizedFactor = (lessThanOneFactor / factorDelta) - lowerIndex;
+
+    const Vector blendVector = {
+        .elements = calloc(1, sizeof(double)),
+        .dimension = 1
+    };
+
+    blendVector.elements[0] = factor;
+
+    return blendVectorsElementwise(blendVector, vectors[lowerIndex], vectors[lowerIndex+1]);
+}
+

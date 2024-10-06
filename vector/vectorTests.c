@@ -130,6 +130,26 @@ bool testBlendVectorsElementwise(
     return testResults[0];
 }
 
+bool testInterpolateVectors(
+    const double factor,
+    const InterpolationType interpolationType,
+    int count,
+    const Vector inputVectors[],
+    const Vector expectedResult) {
+
+    char *testTitles[] = {"Interpolated vector is correct"};
+
+    const Vector interpolation = interpolateVectors(factor, interpolationType, count, inputVectors);
+
+    const bool testResults[] = {
+        vectorsAreEqual(interpolation, expectedResult)
+    };
+
+    printTest("interpolation", 1, testTitles, testResults);
+
+    return testResults[0];
+}
+
 void runVectorTests() {
     printf("\nVector Tests\n-----\n");
 
@@ -234,6 +254,38 @@ void runVectorTests() {
             createVector(2, (double[]){0.0}),
             createVector(2, (double[]){1.0, 1.0}),
             createVector(2, (double[]){0.5, 0.5})),
+
+        testInterpolateVectors(
+            0.5, LINEAR, 2,
+            (Vector[]){
+                createVector(2, (double[]){0.0, 0.0}),
+                createVector(2, (double[]){1.0, 1.0})
+            },
+            createVector(2, (double[]){0.5, 0.5})),
+
+        testInterpolateVectors(
+            1.0, LINEAR, 2,
+            (Vector[]){
+                createVector(2, (double[]){0.0, 0.0}),
+                createVector(2, (double[]){1.0, 1.0})
+            },
+            createVector(2, (double[]){1.0, 1.0})),
+
+        testInterpolateVectors(
+            1.0, CYCLICAL, 2,
+            (Vector[]){
+                createVector(2, (double[]){0.0, 0.0}),
+                createVector(2, (double[]){1.0, 1.0})
+            },
+            createVector(2, (double[]){0.0, 0.0})),
+
+        testInterpolateVectors(
+            0.0, CYCLICAL, 2,
+            (Vector[]){
+                createVector(2, (double[]){0.0, 0.0}),
+                createVector(2, (double[]){1.0, 1.0})
+            },
+            createVector(2, (double[]){0.0, 0.0}))
     };
 
     constexpr size_t numberOfTests = sizeof(testResults) / sizeof(bool);
