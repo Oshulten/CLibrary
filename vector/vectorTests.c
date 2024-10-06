@@ -47,6 +47,18 @@ void testVectorsAreEqual(const Vector firstVector, const Vector secondVector, co
     freeVector(secondVector);
 }
 
+void testCopyVector(const Vector vector) {
+    char *testTitles[] = { "Vectors are equal" };
+
+    const Vector copiedVector = copyVector(vector);
+    const bool testResults[] = {
+        vectorsAreEqual(vector, copiedVector)
+    };
+
+    printTest("copyVector", 1, testTitles, testResults);
+    freeVector(copiedVector);
+}
+
 void runVectorTests() {
     testCreateVector(4, (double[]){1.0, 4.1, 3.0, 4.0});
     testCreateVector(3, (double[]){1.0, 2.0, 3.0});
@@ -66,4 +78,8 @@ void runVectorTests() {
         createVector(3, (double[]){0.0, 0.0, 0.0}),
         createVector(3, (double[]){0.0, 0.0, 1.0}),
         false);
+
+    testCopyVector(createVector(0, (double[]){}));
+    testCopyVector(createVector(1, (double[]){0.0}));
+    testCopyVector(createVector(2, (double[]){0.0, 0.0}));
 }

@@ -76,8 +76,6 @@ void freeVector(const Vector vector) {
 }
 
 bool vectorsAreEqual(const Vector firstVector, const Vector secondVector) {
-    printVector(firstVector);
-    printVector(secondVector);
     return
             firstVector.dimension == secondVector.dimension &&
             arraysAreEqual(firstVector.dimension, firstVector.elements, secondVector.elements);
@@ -117,18 +115,18 @@ bool vectorsAreEqual(const Vector firstVector, const Vector secondVector) {
 //     return result;
 // }
 //
-// Vector copyVector(const Vector vector) {
-//     const Vector copy = {
-//         .elements = calloc(vector.dimension, sizeof(double)),
-//         .dimension = vector.dimension
-//     };
-//
-//     for (int i = 0; i < vector.dimension; i++) {
-//         copy.elements[i] = vector.elements[i];
-//     }
-//
-//     return copy;
-// }
+Vector copyVector(const Vector vector) {
+    const Vector copy = {
+        .elements = calloc(vector.dimension, sizeof(double)),
+        .dimension = vector.dimension
+    };
+
+    for (int i = 0; i < vector.dimension; i++) {
+        copy.elements[i] = vector.elements[i];
+    }
+
+    return copy;
+}
 //
 // Vector translateVector(const Vector vector, const Vector translation) {
 //     for (int i = 0; i < vector.dimension; i++) {
