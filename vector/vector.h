@@ -27,6 +27,7 @@ void printArray(int count, double elements[], const char delimiters[]);
 Vector createVector(const int dimension, double elements[]);
 void printVector(Vector vector);
 void freeVector(Vector vector);
+bool vectorsAreEqual(const Vector firstVector, const Vector secondVector);
 Vector copyVector(Vector vector);
 //
 // Vector translateVector(Vector vector, Vector translation);

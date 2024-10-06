@@ -17,7 +17,7 @@ bool almostEqual(const double value, const double comparisonValue, const double 
 
 bool arraysAreEqual(const int count, const double array[count], const double comparison[count]) {
     for (int i = 0; i < count; i++) {
-        if (!(almostEqual(array[i], comparison[i], 0.001)))
+        if (!(almostEqual(array[i], comparison[i], DBL_MIN)))
             return false;
     }
     return true;
@@ -75,8 +75,12 @@ void freeVector(const Vector vector) {
     free(vector.elements);
 }
 
-void vectorsAreEqual(const int count, const Vector vectors[]) {
-    return;
+bool vectorsAreEqual(const Vector firstVector, const Vector secondVector) {
+    printVector(firstVector);
+    printVector(secondVector);
+    return
+            firstVector.dimension == secondVector.dimension &&
+            arraysAreEqual(firstVector.dimension, firstVector.elements, secondVector.elements);
 }
 
 // Vector operateOnVectors(const Operation operation, const int count, const Vector vectors[]) {

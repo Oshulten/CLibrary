@@ -21,7 +21,7 @@ void printTest(char *testTitle, const int testCount, const char* testTitles[], c
     printf("Result: %d/%d\n\n", passingTests, testCount);
 }
 
-void shouldCreateVectorWithCorrectElementsAndDimension(const int dimension, double elements[]) {
+void testCreateVector(const int dimension, double elements[]) {
     char *testTitles[] = { "Elements are correct", "Dimension is correct" };
 
     Vector v = createVector(dimension, elements);
@@ -31,14 +31,39 @@ void shouldCreateVectorWithCorrectElementsAndDimension(const int dimension, doub
         v.dimension == dimension
     };
 
-    printTest("Should create vector with correct elements and dimension", 2, testTitles, testResults);
+    printTest("createVector", 2, testTitles, testResults);
     freeVector(v);
 }
 
+void testVectorsAreEqual(const Vector firstVector, const Vector secondVector, const bool equals) {
+    char *testTitles[] = { "Vectors are equal" };
+
+    const bool testResults[] = {
+        vectorsAreEqual(firstVector, secondVector) == equals
+    };
+
+    printTest("vectorsAreEqual", 1, testTitles, testResults);
+    freeVector(firstVector);
+    freeVector(secondVector);
+}
+
 void runVectorTests() {
-    shouldCreateVectorWithCorrectElementsAndDimension(4, (double[]){1.0, 4.1, 3.0, 4.0});
-    shouldCreateVectorWithCorrectElementsAndDimension(3, (double[]){1.0, 2.0, 3.0});
-    shouldCreateVectorWithCorrectElementsAndDimension(2, (double[]){1.0, 2.0});
-    shouldCreateVectorWithCorrectElementsAndDimension(1, (double[]){0.0});
-    shouldCreateVectorWithCorrectElementsAndDimension(0, (double[]){});
+    testCreateVector(4, (double[]){1.0, 4.1, 3.0, 4.0});
+    testCreateVector(3, (double[]){1.0, 2.0, 3.0});
+    testCreateVector(2, (double[]){1.0, 2.0});
+    testCreateVector(1, (double[]){0.0});
+    testCreateVector(0, (double[]){});
+
+    testVectorsAreEqual(
+        createVector(2, (double[]){0.0, 0.0}),
+        createVector(2, (double[]){0.0, 0.0}),
+        true);
+    testVectorsAreEqual(
+        createVector(3, (double[]){0.0, 0.0, 0.0}),
+        createVector(2, (double[]){0.0, 0.0}),
+        false);
+    testVectorsAreEqual(
+        createVector(3, (double[]){0.0, 0.0, 0.0}),
+        createVector(3, (double[]){0.0, 0.0, 1.0}),
+        false);
 }
