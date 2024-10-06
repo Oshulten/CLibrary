@@ -10,28 +10,6 @@
 #include <string.h>
 #include <tgmath.h>
 
-bool almostEqual(const double value, const double comparisonValue, const double epsilon) {
-    return (fabs(value - comparisonValue)) <= epsilon;
-}
-
-bool arraysAreEqual(const int count, const double array[count], const double comparison[count]) {
-    for (int i = 0; i < count; i++) {
-        if (!(almostEqual(array[i], comparison[i], 0.01)))
-            return false;
-    }
-    return true;
-}
-
-void printTest(char *testTitle, const int testCount, const char* testTitles[], const bool testResults[]) {
-    printf("Test: %s\n", testTitle);
-    int passingTests = 0;
-    for (int i = 0; i < testCount; i++) {
-        printf("\t%s: %s\n", testTitles[i], testResults[i] ? "Pass" : "Fail");
-        passingTests += testResults[i];
-    }
-    printf("Result: %d/%d\n\n", passingTests, testCount);
-}
-
 void printArray(int count, double elements[]) {
     constexpr int DIGITS_PER_ELEMENT = 8;
 
@@ -63,19 +41,39 @@ void printArray(int count, double elements[]) {
     free(printString);
 }
 
+bool almostEqual(const double value, const double comparisonValue, const double epsilon) {
+    return (fabs(value - comparisonValue)) <= epsilon;
+}
+
+bool arraysAreEqual(const int count, const double array[count], const double comparison[count]) {
+    for (int i = 0; i < count; i++) {
+        if (!(almostEqual(array[i], comparison[i], 0.01)))
+            return false;
+    }
+    return true;
+}
+
+void printTest(char *testTitle, const int testCount, const char* testTitles[], const bool testResults[]) {
+    printf("Test: %s\n", testTitle);
+    int passingTests = 0;
+    for (int i = 0; i < testCount; i++) {
+        printf("\t%s: %s\n", testTitles[i], testResults[i] ? "Pass" : "Fail");
+        passingTests += testResults[i];
+    }
+    printf("Result: %d/%d\n\n", passingTests, testCount);
+}
+
 void shouldCreateVectorWithCorrectElementsAndDimension(const int dimension, double elements[]) {
     char *testTitles[] = { "Elements are correct", "Dimension is correct" };
 
     Vector v = createVector(dimension, elements);
 
-    bool testResults[] = {
-        arraysAreEqual(3, elements, v.elements),
+    const bool testResults[] = {
+        arraysAreEqual(dimension, elements, v.elements),
         v.dimension == dimension
     };
 
     printTest("Should create vector with correct elements and dimension", 2, testTitles, testResults);
-    printArray(dimension, elements);
-    printVector(v);
     freeVector(v);
 }
 
