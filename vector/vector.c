@@ -155,7 +155,7 @@ void vectorDimensionsMinMax(const int count, const Vector *vectors, int *min, in
     }
 }
 
-Vector blendVectorsElementwise(const Vector blendVector, const Vector firstVector, const Vector secondVector) {
+Vector blendVectorPair(const Vector blendVector, const Vector firstVector, const Vector secondVector) {
     const Vector vectors[] = { blendVector, firstVector, secondVector };
 
     int minVectorDimension, maxVectorDimension;
@@ -201,8 +201,8 @@ Vector interpolateVectors(const double factor, const InterpolationType interpola
         .dimension = 1
     };
 
-    blendVector.elements[0] = factor;
+    blendVector.elements[0] = normalizedFactor;
 
-    return blendVectorsElementwise(blendVector, vectors[lowerIndex], vectors[lowerIndex+1]);
+    return blendVectorPair(blendVector, vectors[lowerIndex], vectors[lowerIndex+1]);
 }
 

@@ -8,4 +8,6 @@ add_executable(CLibraries
         vector/vector.h
         vector/vectorTests.h
         vector/vectorTests.c
+        linkedList/linkedList.c
+        linkedList/linkedList.h
 )
