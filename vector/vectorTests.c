@@ -11,7 +11,7 @@
 #include <string.h>
 #include <tgmath.h>
 
-void printTest(char *testTitle, const int testCount, const char* testTitles[], const bool testResults[]) {
+void printTest(char *testTitle, const int testCount, const char *testTitles[], const bool testResults[]) {
     printf("Test: %s\n", testTitle);
     int passingTests = 0;
     for (int i = 0; i < testCount; i++) {
@@ -22,7 +22,7 @@ void printTest(char *testTitle, const int testCount, const char* testTitles[], c
 }
 
 bool testCreateVector(const int dimension, double elements[]) {
-    char *testTitles[] = { "Elements are correct", "Dimension is correct" };
+    char *testTitles[] = {"Elements are correct", "Dimension is correct"};
 
     Vector v = createVector(dimension, elements);
 
@@ -39,7 +39,7 @@ bool testCreateVector(const int dimension, double elements[]) {
 }
 
 bool testVectorsAreEqual(const Vector firstVector, const Vector secondVector, const bool equals) {
-    char *testTitles[] = { "Vectors are equal" };
+    char *testTitles[] = {"Vectors are equal"};
 
     const bool testResults[] = {
         vectorsAreEqual(firstVector, secondVector) == equals
@@ -54,7 +54,7 @@ bool testVectorsAreEqual(const Vector firstVector, const Vector secondVector, co
 }
 
 bool testCopyVector(const Vector vector) {
-    char *testTitles[] = { "Vectors are equal" };
+    char *testTitles[] = {"Vectors are equal"};
 
     const Vector copiedVector = copyVector(vector);
     const bool testResults[] = {
@@ -69,7 +69,7 @@ bool testCopyVector(const Vector vector) {
 }
 
 bool testTranslateVector(const Vector vector, const Vector translation, const Vector result) {
-    char *testTitles[] = { "Vectors are equal" };
+    char *testTitles[] = {"Vectors are equal"};
 
     const bool testResults[] = {
         vectorsAreEqual(
@@ -83,7 +83,7 @@ bool testTranslateVector(const Vector vector, const Vector translation, const Ve
 }
 
 bool testDilateVector(const Vector vector, const Vector dilation, const Vector result) {
-    char *testTitles[] = { "Vectors are equal" };
+    char *testTitles[] = {"Vectors are equal"};
 
     const bool testResults[] = {
         vectorsAreEqual(
@@ -94,6 +94,22 @@ bool testDilateVector(const Vector vector, const Vector dilation, const Vector r
     printTest("dilateVector", 1, testTitles, testResults);
 
     return testResults[0];
+}
+
+bool testVectorDimensionsMinMax(const int count, const Vector *vectors, int expectedMin, int expectedMax) {
+    char *testTitles[] = {"Min is correct", "Max is correct"};
+
+    int min, max;
+    vectorDimensionsMinMax(count, vectors, &min, &max);
+
+    const bool testResults[] = {
+        min == expectedMin,
+        max == expectedMax
+    };
+
+    printTest("vectorDimensionsMinMax", 2, testTitles, testResults);
+
+    return testResults[0] && testResults[1];
 }
 
 void runVectorTests() {
@@ -151,7 +167,31 @@ void runVectorTests() {
         testDilateVector(
             createVector(3, (double[]){1.0, 1.0, 1.0}),
             createVector(5, (double[]){1.0, 2.0, 3.0, 4.0, 5.0}),
-            createVector(3, (double[]){1.0, 2.0, 3.0}))
+            createVector(3, (double[]){1.0, 2.0, 3.0})),
+
+        testVectorDimensionsMinMax(
+            1,
+            (Vector[]){
+                createVector(3, (double[]){1.0, 1.0, 1.0})
+            },
+            3, 3),
+
+        testVectorDimensionsMinMax(
+            2,
+            (Vector[]){
+                createVector(3, (double[]){1.0, 1.0, 1.0}),
+                createVector(1, (double[]){1.0})
+            },
+            1, 3),
+
+        testVectorDimensionsMinMax(
+            3,
+            (Vector[]){
+                createVector(3, (double[]){1.0, 1.0, 1.0}),
+                createVector(1, (double[]){1.0}),
+                createVector(0, (double[]){})
+            },
+            0, 3),
     };
 
     constexpr size_t numberOfTests = sizeof(testResults) / sizeof(bool);
@@ -161,5 +201,4 @@ void runVectorTests() {
         positiveResults += testResults[i];
 
     printf("\n-----\nVector Tests Results: %llu/%llu\n-----", positiveResults, numberOfTests);
-
 }

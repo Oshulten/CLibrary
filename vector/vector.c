@@ -142,31 +142,19 @@ Vector dilateVector(const Vector vector, const Vector dilation) {
     return vector;
 }
 
-// void vectorDimensionsMinMax(const Vector *vectors, const int count, int *min, int *max) {
-//     *min = INT_MAX;
-//     *max = 0;
-//     for (int i = 0; i < count; i++) {
-//         *min = vectors[i].dimension < *min
-//                                  ? vectors[i].dimension
-//                                  : *min;
-//         *max = vectors[i].dimension > *max
-//                                  ? vectors[i].dimension
-//                                  : *max;
-//     }
-// }
-//
-// bool approximateEqual(const double value, const double comparisonValue, const double epsilon) {
-//     return fabs(value - comparisonValue) <= epsilon;
-// }
-//
-// bool allEqual(const int count, const int values[]) {
-//     for (int i = 1; i < count; i++) {
-//         if (values[i] != values[0])
-//             return false;
-//     }
-//     return true;
-// }
-//
+void vectorDimensionsMinMax(const int count, const Vector *vectors, int *min, int *max) {
+    *min = 10000;
+    *max = 0;
+    for (int i = 0; i < count; i++) {
+        *min = vectors[i].dimension < *min
+                                 ? vectors[i].dimension
+                                 : *min;
+        *max = vectors[i].dimension > *max
+                                 ? vectors[i].dimension
+                                 : *max;
+    }
+}
+
 // Vector blendVectorsElementwise(const Vector blendVector, const Vector firstVector, const Vector secondVector) {
 //     const Vector vectors[] = { blendVector, firstVector, secondVector };
 //
