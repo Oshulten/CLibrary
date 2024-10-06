@@ -11,6 +11,49 @@
 #include <stdlib.h>
 #include <string.h>
 
+bool almostEqual(const double value, const double comparisonValue, const double epsilon) {
+    return (fabs(value - comparisonValue)) <= epsilon;
+}
+
+bool arraysAreEqual(const int count, const double array[count], const double comparison[count]) {
+    for (int i = 0; i < count; i++) {
+        if (!(almostEqual(array[i], comparison[i], 0.001)))
+            return false;
+    }
+    return true;
+}
+
+void printArray(int count, double elements[], const char delimiters[]) {
+    constexpr int DIGITS_PER_ELEMENT = 8;
+
+    char *printString = calloc(
+        count * (2 + DIGITS_PER_ELEMENT),
+        sizeof(char)
+    );
+
+    for (int i = 0; i < count; i++) {
+        const bool isLast = (i == count - 1);
+
+        const auto valueString = (char *) calloc(
+            DIGITS_PER_ELEMENT + isLast * 2,
+            sizeof(char)
+        );
+
+        sprintf(
+            valueString,
+            isLast ? "%f" : "%f, ",
+            elements[i]
+        );
+
+        strncat(printString, valueString, DIGITS_PER_ELEMENT + 2);
+        free(valueString);
+    }
+
+    printf("%c%s%c\n", delimiters[0], printString, delimiters[1]);
+
+    free(printString);
+}
+
 Vector createVector(const int dimension, double elements[]) {
     const Vector vector = {
         .elements = calloc(dimension, sizeof(double)),
@@ -57,6 +100,10 @@ void printVector(const Vector vector) {
 
 void freeVector(const Vector vector) {
     free(vector.elements);
+}
+
+void vectorsAreEqual(const int count, const Vector vectors[]) {
+    return;
 }
 
 // Vector operateOnVectors(const Operation operation, const int count, const Vector vectors[]) {

@@ -20,6 +20,10 @@ typedef enum {
     CYCLICAL
 } InterpolationType;
 
+bool almostEqual(const double value, const double comparisonValue, const double epsilon);
+bool arraysAreEqual(const int count, const double array[count], const double comparison[count]);
+void printArray(int count, double elements[], const char delimiters[]);
+
 Vector createVector(const int dimension, double elements[]);
 void printVector(Vector vector);
 void freeVector(Vector vector);
