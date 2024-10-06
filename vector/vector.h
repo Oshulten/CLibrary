@@ -29,6 +29,7 @@ void printVector(Vector vector);
 void freeVector(Vector vector);
 bool vectorsAreEqual(const Vector firstVector, const Vector secondVector);
 Vector copyVector(Vector vector);
+Vector translateVector(const Vector vector, const Vector translation);
 //
 // Vector translateVector(Vector vector, Vector translation);
 // Vector dilateVector(Vector vector, Vector dilation);

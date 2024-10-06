@@ -59,6 +59,18 @@ void testCopyVector(const Vector vector) {
     freeVector(copiedVector);
 }
 
+void testTranslateVector(const Vector vector, const Vector translation, const Vector result) {
+    char *testTitles[] = { "Vectors are equal" };
+
+    const bool testResults[] = {
+        vectorsAreEqual(
+            translateVector(vector, translation),
+            result)
+    };
+
+    printTest("translateVector", 1, testTitles, testResults);
+}
+
 void runVectorTests() {
     testCreateVector(4, (double[]){1.0, 4.1, 3.0, 4.0});
     testCreateVector(3, (double[]){1.0, 2.0, 3.0});
@@ -82,4 +94,19 @@ void runVectorTests() {
     testCopyVector(createVector(0, (double[]){}));
     testCopyVector(createVector(1, (double[]){0.0}));
     testCopyVector(createVector(2, (double[]){0.0, 0.0}));
+
+    testTranslateVector(
+        createVector(2, (double[]){0.0, 0.0}),
+        createVector(2, (double[]){0.0, 0.0}),
+        createVector(2, (double[]){0.0, 0.0}));
+
+    testTranslateVector(
+        createVector(3, (double[]){0.0, 0.0, 0.0}),
+        createVector(1, (double[]){1.0}),
+        createVector(3, (double[]){1.0, 1.0, 1.0}));
+
+    testTranslateVector(
+        createVector(3, (double[]){0.0, 0.0, 0.0}),
+        createVector(5, (double[]){1.0, 1.0, 1.0, 1.0, 1.0}),
+        createVector(3, (double[]){1.0, 1.0, 1.0}));
 }

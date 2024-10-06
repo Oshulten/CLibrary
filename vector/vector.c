@@ -127,14 +127,14 @@ Vector copyVector(const Vector vector) {
 
     return copy;
 }
-//
-// Vector translateVector(const Vector vector, const Vector translation) {
-//     for (int i = 0; i < vector.dimension; i++) {
-//         vector.elements[i] += translation.elements[(int)fmin(i, translation.dimension-1)];
-//     }
-//     return vector;
-// }
-//
+
+Vector translateVector(const Vector vector, const Vector translation) {
+    for (int i = 0; i < vector.dimension; i++) {
+        vector.elements[i] += translation.elements[(int)fmin(i, translation.dimension-1)];
+    }
+    return vector;
+}
+
 // Vector dilateVector(const Vector vector, const Vector dilation) {
 //     for (int i = 0; i < vector.dimension; i++) {
 //         vector.elements[i] *= dilation.elements[(int)fmin(i, dilation.dimension-1)];
