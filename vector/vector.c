@@ -143,7 +143,7 @@ Vector dilateVector(const Vector vector, const Vector dilation) {
 }
 
 void vectorDimensionsMinMax(const int count, const Vector *vectors, int *min, int *max) {
-    *min = 10000;
+    *min = INT_MAX;
     *max = 0;
     for (int i = 0; i < count; i++) {
         *min = vectors[i].dimension < *min
@@ -155,26 +155,26 @@ void vectorDimensionsMinMax(const int count, const Vector *vectors, int *min, in
     }
 }
 
-// Vector blendVectorsElementwise(const Vector blendVector, const Vector firstVector, const Vector secondVector) {
-//     const Vector vectors[] = { blendVector, firstVector, secondVector };
-//
-//     int minVectorDimension, maxVectorDimension;
-//     vectorDimensionsMinMax(vectors, 3, &minVectorDimension, &maxVectorDimension);
-//
-//     const Vector result = {
-//         .elements = calloc(maxVectorDimension, sizeof(double)),
-//         .dimension = maxVectorDimension
-//     };
-//
-//     for (int i = 0; i < maxVectorDimension; i++) {
-//         const double blendFactor = blendVector.elements[(int)fmin(i, blendVector.dimension-1)];
-//         const double firstValue = firstVector.elements[(int)fmin(i, firstVector.dimension-1)];
-//         const double secondValue = secondVector.elements[(int)fmin(i, secondVector.dimension-1)];
-//         result.elements[i] = (1.0 - blendFactor)*firstValue + blendFactor*secondValue;
-//     }
-//
-//     return result;
-// }
+Vector blendVectorsElementwise(const Vector blendVector, const Vector firstVector, const Vector secondVector) {
+    const Vector vectors[] = { blendVector, firstVector, secondVector };
+
+    int minVectorDimension, maxVectorDimension;
+    vectorDimensionsMinMax(3, vectors, &minVectorDimension, &maxVectorDimension);
+
+    const Vector result = {
+        .elements = calloc(maxVectorDimension, sizeof(double)),
+        .dimension = maxVectorDimension
+    };
+
+    for (int i = 0; i < maxVectorDimension; i++) {
+        const double blendFactor = blendVector.elements[(int)fmin(i, blendVector.dimension-1)];
+        const double firstValue = firstVector.elements[(int)fmin(i, firstVector.dimension-1)];
+        const double secondValue = secondVector.elements[(int)fmin(i, secondVector.dimension-1)];
+        result.elements[i] = (1.0 - blendFactor)*firstValue + blendFactor*secondValue;
+    }
+
+    return result;
+}
 //
 // Vector interpolateVectors(const double factor, const InterpolationType interpolationType, int count, Vector inputVectors[]) {
 //     va_list args;

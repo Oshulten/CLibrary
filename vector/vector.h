@@ -33,6 +33,7 @@ Vector translateVector(const Vector vector, const Vector translation);
 Vector dilateVector(const Vector vector, const Vector translation);
 
 void vectorDimensionsMinMax(const int count, const Vector *vectors, int *min, int *max);
+Vector blendVectorsElementwise(const Vector blendVector, const Vector firstVector, const Vector secondVector);
 
 // Vector operateOnVectors(Operation operation, int count, Vector vectors[]);
 // Vector interpolateVectors(double factor, InterpolationType interpolationType, int count, Vector vectors[]);
