@@ -13,6 +13,8 @@ typedef struct Node {
 
 Node *endOfLinkedList(Node *member);
 Node *startOfLinkedList(Node *member);
+Node *findAfter(Node *startNode, void *data, bool (*equalityFunction)(void*, void*));
+
 void insertNodeAfter(Node* node, Node* insertion);
 void insertNodeBefore(Node* node, Node* insertion);
 void deleteNode(Node *node);

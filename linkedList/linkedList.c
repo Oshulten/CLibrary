@@ -8,7 +8,7 @@
 #include <stdlib.h>
 
 Node *endOfLinkedList(Node *member) {
-    const Node *currentNode = member;
+    Node *currentNode = member;
     while (currentNode -> next != nullptr) {
         currentNode = currentNode -> next;
     }
@@ -37,6 +37,18 @@ void insertNodeBefore(Node* node, Node* insertion) {
     insertion -> next = node;
     insertion -> previous = earlierNode;
     earlierNode -> next = insertion;
+}
+
+Node *findAfter(Node *startNode, void *data, bool (*equalityFunction)(void*, void*)) {
+    Node *currentNode = startNode;
+
+    do {
+        if (equalityFunction(currentNode -> data, data))
+            return currentNode;
+    }
+    while ((currentNode = currentNode -> next) != nullptr);
+
+    return nullptr;
 }
 
 void deleteNode(Node *node) {
