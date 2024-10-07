@@ -22,7 +22,7 @@ typedef enum {
 } Direction;
 
 Node *findLeaf(Node *member, LeafType leafType);
-Node *findAfter(Node *startNode, void *data, bool (*equalityFunction)(void*, void*));
+Node *findNode(Node *startNode, void *data, bool (*equalityFunction)(void *, void *), Direction direction);
 
 void insertNode(Node* node, Node* insertion, Direction direction);
 void deleteNode(Node *node);

@@ -58,13 +58,16 @@ void insertNode(Node *node, Node *insertion, Direction direction) {
     }
 }
 
-Node *findAfter(Node *startNode, void *data, bool (*equalityFunction)(void *, void *)) {
+Node *findNode(Node *startNode, void *data, bool (*equalityFunction)(void *, void *), Direction direction) {
     Node *currentNode = startNode;
 
     do {
         if (equalityFunction(currentNode->data, data))
             return currentNode;
-    } while ((currentNode = currentNode->next) != nullptr);
+    } while ((currentNode = (
+                  direction == AFTER
+                      ? currentNode->next
+                      : currentNode->previous)) != nullptr);
 
     return nullptr;
 }

@@ -13,9 +13,6 @@ bool doubleEquals(void *term1, void *term2) {
 }
 
 int main(void) {
-    double d1 = 3.2;
-    double d2 = 3.2;
-    printf("\n%d", doubleEquals(&d1, &d2));
     // runVectorTests();
     Node nodeA = { &(double){1.0}, nullptr, nullptr };
     Node nodeB = { &(double){2.0}, nullptr, nullptr };
@@ -28,7 +25,7 @@ int main(void) {
     printf("\nB address: %p, B value: %f", &nodeB, *(double*)nodeB.data);
     printf("\nC address: %p, C value: %f", &nodeC, *(double*)nodeC.data);
 
-    Node *searchResult = findAfter(&nodeA, &(double){2.5}, doubleEquals);
+    Node *searchResult = findNode(&nodeC, &(double){2.0}, doubleEquals, AFTER);
     if (searchResult)
         printf("\nfind address: %p, find value: %f", searchResult, *(double*)searchResult->data);
 
