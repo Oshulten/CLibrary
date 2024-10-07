@@ -82,6 +82,23 @@ void connectNodes(Node *firstNode, Node *secondNode) {
     secondNode->previous = firstNode;
 }
 
+char *nodeToString(Node *node, char * (*dataToString)(void *), int maxDataStringLength) {
+    constexpr int addressStringLength = 50;
+    const int fullStringLength = addressStringLength + maxDataStringLength + 50;
+
+    char *address = calloc(addressStringLength, sizeof(char));
+    snprintf(address, addressStringLength, "%p", node);
+
+    char *dataString = dataToString(node -> data);
+
+    char *fullString = calloc(fullStringLength, sizeof(char));;
+    snprintf(fullString, fullStringLength, "Address: %s, Data: %s", address, dataString);
+
+    free(address);
+
+    return fullString;
+}
+
 void printAddresses(Node *head) {
     Node *currentNode = head;
     do {

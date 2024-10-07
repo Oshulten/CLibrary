@@ -12,6 +12,12 @@ bool doubleEquals(void *term1, void *term2) {
     return fabs(value1 - value2) <= DBL_MIN;
 }
 
+char *doubleToString(void *ptr) {
+    static char string[50];
+    snprintf(string, 50, "%.5f", *(double*)ptr);
+    return string;
+}
+
 int main(void) {
     // runVectorTests();
     Node nodeA = { &(double){1.0}, nullptr, nullptr };
@@ -25,9 +31,7 @@ int main(void) {
     printf("\nB address: %p, B value: %f", &nodeB, *(double*)nodeB.data);
     printf("\nC address: %p, C value: %f", &nodeC, *(double*)nodeC.data);
 
-    Node *searchResult = findNode(&nodeC, &(double){2.0}, doubleEquals, AFTER);
-    if (searchResult)
-        printf("\nfind address: %p, find value: %f", searchResult, *(double*)searchResult->data);
-
+    printf("\n%s", doubleToString(nodeB.data));
+    printf("\n%s", nodeToString(&nodeB, doubleToString, 50));
     return 0;
 }

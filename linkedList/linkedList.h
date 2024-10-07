@@ -29,5 +29,6 @@ void deleteNode(Node *node);
 void connectNodes(Node *firstNode, Node *secondNode);
 
 void printAddresses(Node *head);
+char *nodeToString(Node *node, char * (*dataToString)(void *), int maxDataStringLength);
 
 #endif //LINKEDLIST_H
