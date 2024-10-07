@@ -23,6 +23,16 @@ Node *startOfLinkedList(Node *member) {
     return currentNode;
 }
 
+void insertNode(Node* node, Node* insertion, Direction direction) {
+    switch (direction) {
+        case BEFORE:
+            insertNodeBefore(node, insertion);
+            return;
+        case AFTER:
+            insertNodeAfter(node, insertion);
+    }
+}
+
 void insertNodeAfter(Node* node, Node* insertion) {
     Node *nextNode = node -> next;
     node -> next = insertion;
