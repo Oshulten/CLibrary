@@ -13,9 +13,9 @@ typedef struct Node {
 
 Node *endOfLinkedList(Node *member);
 Node *startOfLinkedList(Node *member);
-void insertAfter(Node* node, Node* insertion);
-void insertBefore(Node* node, Node* insertion);
-
+void insertNodeAfter(Node* node, Node* insertion);
+void insertNodeBefore(Node* node, Node* insertion);
+void deleteNode(Node *node);
 void connectNodes(Node *firstNode, Node *secondNode);
 
 void printAddresses(Node *head);

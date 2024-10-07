@@ -5,6 +5,7 @@
 #include "linkedList.h"
 
 #include <stdio.h>
+#include <stdlib.h>
 
 Node *endOfLinkedList(Node *member) {
     const Node *currentNode = member;
@@ -22,7 +23,7 @@ Node *startOfLinkedList(Node *member) {
     return currentNode;
 }
 
-void insertAfter(Node* node, Node* insertion) {
+void insertNodeAfter(Node* node, Node* insertion) {
     Node *nextNode = node -> next;
     node -> next = insertion;
     insertion -> previous = node;
@@ -30,12 +31,17 @@ void insertAfter(Node* node, Node* insertion) {
     nextNode -> previous = node;
 }
 
-void insertBefore(Node* node, Node* insertion) {
+void insertNodeBefore(Node* node, Node* insertion) {
     Node *earlierNode = node -> previous;
     node -> previous = insertion;
     insertion -> next = node;
     insertion -> previous = earlierNode;
     earlierNode -> next = insertion;
+}
+
+void deleteNode(Node *node) {
+    node -> previous -> next = node -> next;
+    node -> next -> previous = node -> previous;
 }
 
 void connectNodes(Node *firstNode, Node *secondNode) {
