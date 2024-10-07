@@ -12,12 +12,16 @@ typedef struct Node {
 } Node;
 
 typedef enum {
+    HEAD,
+    TAIL
+} LeafType;
+
+typedef enum {
     BEFORE,
     AFTER
 } Direction;
 
-Node *endOfLinkedList(Node *member);
-Node *startOfLinkedList(Node *member);
+Node *findLeaf(Node *member, LeafType leafType);
 Node *findAfter(Node *startNode, void *data, bool (*equalityFunction)(void*, void*));
 
 void insertNode(Node* node, Node* insertion, Direction direction);
