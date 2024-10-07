@@ -4,6 +4,8 @@
 
 #include "linkedList.h"
 
+#include <stdio.h>
+
 Node *endOfLinkedList(Node *member) {
     const Node *currentNode = member;
     while (currentNode -> next != nullptr) {
@@ -20,7 +22,22 @@ Node *startOfLinkedList(Node *member) {
     return currentNode;
 }
 
+void insertAfter(Node* node, Node* insertion) {
+    Node *nextNode = node -> next;
+    node -> next = insertion;
+    insertion -> previous = node;
+    insertion -> next = nextNode;
+}
+
 void connectNodes(Node *firstNode, Node *secondNode) {
     firstNode -> next = secondNode;
     secondNode -> previous = firstNode;
+}
+
+void printAddresses(Node *head) {
+    Node *currentNode = head;
+    do {
+        printf("\n%p", currentNode);
+    }
+    while ((currentNode = currentNode -> next) != nullptr);
 }
