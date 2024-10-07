@@ -11,4 +11,8 @@ typedef struct Node {
     struct Node *next;
 } Node;
 
+Node *endOfLinkedList(Node *member);
+Node *startOfLinkedList(Node *member);
+void connectNodes(Node *firstNode, Node *secondNode);
+
 #endif //LINKEDLIST_H

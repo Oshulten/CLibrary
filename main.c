@@ -7,13 +7,24 @@
 int main(void) {
     // runVectorTests();
     double nodeData = 3.42;
+    double nodeData2 = 1.0;
 
-    const Node node = {                 
-        .data = &nodeData,
-        .previous = nullptr,
-        .next = nullptr
-    };
+    Node nodes[10];
+    for (int i = 0; i < 10; i++) {
+        Node node = {
+            .data = nullptr,
+            .previous = nullptr,
+            .next = nullptr
+        };
+        nodes[i] = node;
+    }
 
-    printf("%f", *(double*)node.data);
+    for (int i = 0; i < 9; i++) {
+        connectNodes(&nodes[i], &nodes[i+1]);
+    }
+
+
+    printf("\nNode 1 address: %p, beginning of list: %p", &nodes[0], startOfLinkedList(&nodes[9]));
+    printf("\nNode 2 address: %p, end of list: %p", &nodes[9], endOfLinkedList(&nodes[0]));
     return 0;
 }
