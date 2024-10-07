@@ -11,7 +11,7 @@ int main(void) {
     Node nodeC = { nullptr, nullptr, nullptr };
 
     connectNodes(&nodeA, &nodeB);
-    insertAfter(&nodeA, &nodeC);
+    insertBefore(&nodeB, &nodeC);
 
     printf("\nNode A address: %p", &nodeA);
     printf("\nNode B address: %p", &nodeB);

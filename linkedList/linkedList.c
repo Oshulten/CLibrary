@@ -27,6 +27,15 @@ void insertAfter(Node* node, Node* insertion) {
     node -> next = insertion;
     insertion -> previous = node;
     insertion -> next = nextNode;
+    nextNode -> previous = node;
+}
+
+void insertBefore(Node* node, Node* insertion) {
+    Node *earlierNode = node -> previous;
+    node -> previous = insertion;
+    insertion -> next = node;
+    insertion -> previous = earlierNode;
+    earlierNode -> next = insertion;
 }
 
 void connectNodes(Node *firstNode, Node *secondNode) {
