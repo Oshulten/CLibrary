@@ -10,7 +10,7 @@
 char *hslaToString(double color[4]) {
     constexpr int stringLength = 35;
     char *string = calloc(stringLength, sizeof(char));
-    snprintf(string, stringLength, "[%3.2f, %3.2f, %3.2f, %0.2f]", color[0], color[1], color[2], color[3]);
+    snprintf(string, stringLength, "[%3.2f, %3.2f, %3.2f, %1.2f]", color[0], color[1], color[2], color[3]);
     return string;
 }
 
@@ -34,21 +34,31 @@ double *hslaBlendPairByFactor(double factor, double firstColor[4], double second
     return blend;
 }
 
-double *hslaBlend(double weights[4], InterpolationType interpolationType, int colorCount, double colors[0][4]) {
+double *hslaBlend(double weights[4], InterpolationType interpolationType, int colorCount, double **colors) {
     colorCount += (interpolationType == CYCLICAL);
 
     static double blend[4];
 
+    const double factorDelta = 1.0 / (colorCount - 1);
+    printf("\nfactorDelta: %f", factorDelta);
+
+    for (int i = 0; i < colorCount; i++) {
+        printf("\n%s", hslaToString(colors[i]));
+    }
+
     for (int i = 0; i < 4; i++) {
-        const double factorDelta = 1.0 / (colorCount - 1);
-        const double lessThanOneFactor = weights[i] - 0.1E-10;
-        const int pairIndex = floor(lessThanOneFactor / factorDelta);
-        const double normalizedFactor = (lessThanOneFactor / factorDelta) - pairIndex;
+        weights[i] = interpolationType == CYCLICAL && weights[i] == 1.0 ? weights[i] - 0.1E-10 : weights[i];
+        const int pairIndex = floor(weights[i] / factorDelta);
+        const double normalizedFactor = (weights[i] / factorDelta) - pairIndex;
 
         blend[i] =
             (1.0 - normalizedFactor) * colors[pairIndex][i] +
             normalizedFactor * colors[(pairIndex+1)%colorCount][i];
+
+        printf("\n%f\t%d\t%f\t%f", weights[i], pairIndex, normalizedFactor, blend[i]);
     }
+
+    printf("\n%s", hslaToString(blend));
 
     return blend;
 }

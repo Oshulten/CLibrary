@@ -7,6 +7,8 @@ add_subdirectory(homebrew)
 add_executable(Homebrew
         tests.c
         unity.c
+        unity_config.h
+        cmake-build-debug/tests.h
 )
 
 target_link_libraries(Homebrew PUBLIC HomebrewLib)

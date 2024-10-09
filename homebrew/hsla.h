@@ -12,5 +12,5 @@ typedef enum {
 char *hslaToString(double color[4]);
 double *hslaBlendPairByWeights(double weights[4], double firstColor[4], double secondColor[4]);
 double *hslaBlendPairByFactor(double factor, double firstColor[4], double secondColor[4]);
-double *hslaBlend(double weights[4], InterpolationType interpolationType, int colorCount, double colors[0][4]);
+double *hslaBlend(double weights[4], InterpolationType interpolationType, int colorCount, double **colors);
 double *hslaToRgba(double hsla[4]);

@@ -1,4 +1,5 @@
-add_library(HomebrewLib hsla.c)
+add_library(HomebrewLib hsla.c
+        homebrew.h)
 
 target_include_directories(HomebrewLib
 INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}
