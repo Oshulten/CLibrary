@@ -102,11 +102,21 @@ void testHslaBlend() {
 }
 
 void testHslaToRgba() {
+    //Red
     TEST_ASSERT(
         arraysAreEqual(
             4,
-            (double[]){191.0, 64.0, 64.0, 100.0},
-            hslaToRgba((double[]){0.0, 50.0, 50.0, 1.0 })
+            (double[]){255.0, 0.0, 0.0, 1.0},
+            hslaToRgba((double[]){0.0, 100.0, 50.0, 1.0 })
+        )
+    );
+
+    //Silver
+    TEST_ASSERT(
+        arraysAreEqual(
+            4,
+            (double[]){191.0, 191.0, 191.0, 1.0},
+            hslaToRgba((double[]){0.0, 0.0, 75.0, 1.0 })
         )
     );
 }
@@ -117,6 +127,6 @@ int main(void) {
     RUN_TEST(testHslaBlendPairByWeights);
     RUN_TEST(testHslaBlendPairByFactor);
     RUN_TEST(testHslaBlend);
-    // RUN_TEST(testHslaToRgba);
+    RUN_TEST(testHslaToRgba);
     return UNITY_END();
 }
