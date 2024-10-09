@@ -3,18 +3,18 @@
 //
 
 #include "hsla.h"
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <tgmath.h>
 
-char *hslaToString(double const color[4]) {
-    char *string = calloc(24, sizeof(char));
-    snprintf(string, 24, "[%f, %f, %f, %f]", color[0], color[1], color[2], color[3]);
+char *hslaToString(double color[4]) {
+    constexpr int stringLength = 35;
+    char *string = calloc(stringLength, sizeof(char));
+    snprintf(string, stringLength, "[%3.2f, %3.2f, %3.2f, %0.2f]", color[0], color[1], color[2], color[3]);
     return string;
 }
 
-double *hslaBlendPairByWeights(double const weights[4], double const firstColor[4], double const secondColor[4]) {
+double *hslaBlendPairByWeights(double weights[4], double firstColor[4], double secondColor[4]) {
     static double blend[4] = { 0.0 };
 
     for (int i = 0; i < 4; i++) {
@@ -24,7 +24,7 @@ double *hslaBlendPairByWeights(double const weights[4], double const firstColor[
     return blend;
 }
 
-double *hslaBlendPairByFactor(double const factor, double const firstColor[4], double const secondColor[4]) {
+double *hslaBlendPairByFactor(double factor, double firstColor[4], double secondColor[4]) {
     static double blend[4] = { 0.0 };
 
     for (int i = 0; i < 4; i++) {
@@ -34,7 +34,7 @@ double *hslaBlendPairByFactor(double const factor, double const firstColor[4], d
     return blend;
 }
 
-double *hslaBlend(double const weights[4], const InterpolationType interpolationType, int colorCount, double colors[0][4]) {
+double *hslaBlend(double weights[4], InterpolationType interpolationType, int colorCount, double colors[0][4]) {
     colorCount += (interpolationType == CYCLICAL);
 
     static double blend[4];
@@ -61,15 +61,14 @@ double *hslaToRgba(double hsla[4]) {
     const double X = (1.0 - fabs((int)(hsla[0] / 60) % 2 - 1.0));
     const double m = L - C*0.5;
 
-    const int shift = (int)hsla[0] / 60;
-    const double cycle[] = { C + m, X + m, m, m, X + m, C + m };
+    const auto shift = (int)hsla[0] / 60;
+    double *cycle = ((double[6]){ C + m, X + m, m, m, X + m, C + m });
 
-    static double rgba[4] = {
-        cycle[shift],
-        cycle[(shift+4) % 6],
-        cycle[(shift + 2) % 6],
-        hsla[3]
-    };
+    static double rgba[4];
+    rgba[0] = cycle[shift];
+    rgba[1] = cycle[(shift+4) % 6];
+    rgba[2] = cycle[(shift + 2) % 6];
+    rgba[3] = hsla[3];
 
     return rgba;
 }
