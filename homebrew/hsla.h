@@ -5,7 +5,7 @@
 #pragma once
 
 typedef enum {
-    LINEAR,
+    LINEAR = 0,
     CYCLICAL
 } InterpolationType;
 

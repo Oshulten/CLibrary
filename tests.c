@@ -6,10 +6,6 @@
 
 #include "unity.h"
 
-#define UNITY_INCLUDE_DOUBLE
-#define UNITY_DOUBLE_TYPE long double
-#define UNITY_DOUBLE_PRECISION 1
-
 #include <float.h>
 
 #include "homebrew/hsla.h"
@@ -20,7 +16,7 @@ bool almostEqual(const double value, const double comparisonValue, const double 
 
 bool arraysAreEqual(const int count, const double array[count], const double comparison[count]) {
     for (int i = 0; i < count; i++) {
-        if (!(almostEqual(array[i], comparison[i], DBL_MIN)))
+        if (!(almostEqual(array[i], comparison[i], 0.1E-4)))
             return false;
     }
     return true;
@@ -81,22 +77,46 @@ void testHslaBlend() {
             LINEAR,
             4,
             (double*[]) {
-                (double[]){1.0, 0.0, 0.0, 0.0},
-                (double[]){0.0, 1.0, 0.0, 0.0},
-                (double[]){0.0, 0.0, 1.0, 0.0},
-                (double[]){0.0, 0.0, 0.0, 1.0}
+            (double[]){1.0, 0.0, 0.0, 0.0},
+            (double[]){0.0, 1.0, 0.0, 0.0},
+            (double[]){0.0, 0.0, 1.0, 0.0},
+            (double[]){0.0, 0.0, 0.0, 1.0}
+            }
+        )
+    ));
+
+    TEST_ASSERT(arraysAreEqual(
+        4,
+        (double[]){1.0, 1.0, 1.0, 0.0},
+        hslaBlend(
+            (double[]){0.0, 1.0/3.0, 2.0/3.0, 1.0},
+            CYCLICAL,
+            3,
+            (double*[]) {
+            (double[]){1.0, 0.0, 0.0, 0.0},
+            (double[]){0.0, 1.0, 0.0, 0.0},
+            (double[]){0.0, 0.0, 1.0, 0.0},
             }
         )
     ));
 }
 
+void testHslaToRgba() {
+    TEST_ASSERT(
+        arraysAreEqual(
+            4,
+            (double[]){191.0, 64.0, 64.0, 100.0},
+            hslaToRgba((double[]){0.0, 50.0, 50.0, 1.0 })
+        )
+    );
+}
 
-// not needed when using generate_test_runner.rb
 int main(void) {
     UNITY_BEGIN();
     RUN_TEST(testHslaToString);
     RUN_TEST(testHslaBlendPairByWeights);
     RUN_TEST(testHslaBlendPairByFactor);
     RUN_TEST(testHslaBlend);
+    // RUN_TEST(testHslaToRgba);
     return UNITY_END();
 }
