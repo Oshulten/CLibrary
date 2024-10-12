@@ -9,6 +9,10 @@ add_executable(Homebrew
         unity.c
         unity_config.h
         cmake-build-debug/tests.h
+        utilities.c
+        utilities.h
+        hslaTests.c
+        hslaTests.h
 )
 
 target_link_libraries(Homebrew PUBLIC HomebrewLib)
