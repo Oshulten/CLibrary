@@ -10,12 +10,17 @@
 #include <stddef.h>
 
 typedef struct {
-    void **data;
-    size_t size;
-    size_t count;
+    void **elements;
+    size_t memorySize;
+    size_t numberOfElements;
 } Array;
 
-Array createArray();
-void arrayPush(Array stack, void *element);
+Array arrayCreate(int initialSize);
+void arrayPush(Array *array, void *element);
+void *arrayGet(Array *array, int index);
+void arraySet(Array *array, int index, void *element);
+void arrayRemove(Array *array, int index);
+
+
 
 #endif //ARRAY_H

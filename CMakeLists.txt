@@ -13,6 +13,8 @@ add_executable(Homebrew
         utilities.h
         hslaTests.c
         hslaTests.h
+        arrayTests.c
+        arrayTests.h
 )
 
 target_link_libraries(Homebrew PUBLIC HomebrewLib)

@@ -4,9 +4,11 @@
 
 #include "unity.h"
 #include "hslaTests.h"
+#include "arrayTests.h"
 
 int main(void) {
     UNITY_BEGIN();
     runHslaTests();
+    runArrayTests();
     return UNITY_END();
 }
