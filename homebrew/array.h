@@ -16,11 +16,10 @@ typedef struct {
 } Array;
 
 Array arrayCreate(int initialSize);
+char *arrayToString(Array *array, char *(*toString)(void *));
 void arrayPush(Array *array, void *element);
 void *arrayGet(Array *array, int index);
 void arraySet(Array *array, int index, void *element);
 void arrayRemove(Array *array, int index);
-
-
 
 #endif //ARRAY_H

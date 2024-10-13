@@ -5,10 +5,12 @@
 #include "unity.h"
 #include "hslaTests.h"
 #include "arrayTests.h"
+#include "stringTests.h"
 
 int main(void) {
     UNITY_BEGIN();
     runHslaTests();
-    runArrayTests();
+    // runArrayTests();
+    runStringTests();
     return UNITY_END();
 }

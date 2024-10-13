@@ -6,6 +6,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 Array arrayCreate(int initialSize) {
     Array array = {
@@ -17,10 +18,32 @@ Array arrayCreate(int initialSize) {
     return array;
 }
 
+char *arrayToString(Array *array, char *(*toString)(void *)) {
+    static const char returnString[5000] = "";
+
+    strcat(returnString, "[");
+
+    for (int i = 0; i < array->numberOfElements; i++) {
+        char *valueString = toString(array->elements[i]);
+
+        strcat(returnString, valueString);
+
+        if (i < array->numberOfElements - 1) {
+            strcat(returnString, ", ");
+        }
+
+        free(valueString);
+    }
+
+    strcat(returnString, "]");
+
+    return returnString;
+}
+
 void arrayPush(Array *array, void *element) {
     if (array->numberOfElements + 1 > array->memorySize) {
         array->memorySize += ARRAY_REALLOCATION_SIZE;
-        void **newData = realloc(array->elements, array->memorySize*sizeof(void*));
+        void **newData = realloc(array->elements, array->memorySize * sizeof(void *));
 
         for (int i = 0; i < array->numberOfElements; i++) {
             newData[i] = array->elements[i];
@@ -55,19 +78,16 @@ void arrayRemove(Array *array, int index) {
     }
 
     size_t numberOfNewElements = array->numberOfElements - 1;
-    void **newElements = calloc(numberOfNewElements, sizeof(void*));
+    void **newElements = calloc(numberOfNewElements, sizeof(void *));
 
     for (int i = 0; i < index; i++) {
         newElements[i] = array->elements[i];
     }
 
     for (int i = index; i < numberOfNewElements; i++) {
-        newElements[i] = array->elements[i+1];
+        newElements[i] = array->elements[i + 1];
     }
 
     free(array->elements);
     array->elements = newElements;
 }
-
-
-
