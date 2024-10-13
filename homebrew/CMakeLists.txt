@@ -3,8 +3,6 @@ add_library(HomebrewLib hsla.c
         tree.c
         tree.h
         array.c
-        toString.c
-        toString.h
         string.c
         string.h)
 

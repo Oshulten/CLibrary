@@ -2,61 +2,75 @@
 // Created by oshul on 10/13/2024.
 //
 
-#include "string.h"
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
-char* concatenateStrings(int numberOfStrings, char **strings) {
-    int stringLengths[numberOfStrings];
-    int totalStringLengths = 0;
+#include "string.h"
 
-    for (int i = 0; i < numberOfStrings; i++) {
-        stringLengths[i] = strlen(strings[i]);
-        totalStringLengths += stringLengths[i];
-    }
+char *intToString(void *ptr) {
+    char *string = calloc(50, sizeof(char));
+    sprintf(string, "%d", *(int *)ptr);
+    return string;
+}
 
-    char *returnString = calloc(totalStringLengths+1, sizeof(char));
+char *doubleToString(void *ptr) {
+    char *string = calloc(50, sizeof(char));
+    sprintf(string, "%.3f", *(double *) ptr);
+    return string;
+}
 
-    int currentPosition = 0;
-    for (int i = 0; i < numberOfStrings; i++) {
-        for (int j = 0; j < stringLengths[i]; j++) {
-            char currentLetter = strings[i][j];
-            returnString[currentPosition] = currentLetter;
-            currentPosition++;
-        }
-    }
-    returnString[currentPosition] = '\0';
+char *stringToString(void *ptr) {
+    return (char*)ptr;
+}
 
-    return returnString;
+char *concatenateStrings(int numberOfStrings, char **strings) {
+    return wrapStrings(numberOfStrings, strings, nullptr, 0, 0);
 }
 
 char *joinStrings(int numberOfStrings, char **strings, char *delimiter) {
-    int stringLengths[numberOfStrings];
-    int delimiterLength = strlen(delimiter);
-    int totalStringLengths = 0;
+    return wrapStrings(numberOfStrings, strings, delimiter, 0, 0);
+}
+
+char *wrapStrings(int numberOfStrings, char **strings, char *delimiter, char beginning, char end) {
+    size_t stringLengths[numberOfStrings];
+    const size_t delimiterLength = delimiter == nullptr ? 0 : strlen(delimiter);
+    const size_t wrappingLength = (beginning != 0) + (end != 0);
+
+    size_t totalStringLengths = 0;
 
     for (int i = 0; i < numberOfStrings; i++) {
         stringLengths[i] = strlen(strings[i]);
         totalStringLengths += stringLengths[i];
     }
 
-    int totalStringLength = totalStringLengths + 1 + delimiterLength*(numberOfStrings - 1);
+    const size_t totalStringLength = totalStringLengths + 1 + wrappingLength + delimiterLength * (numberOfStrings - 1);
 
     char *returnString = calloc(totalStringLength, sizeof(char));
 
     int currentPosition = 0;
+    if (beginning != 0) {
+        returnString[0] = beginning;
+        currentPosition++;
+    }
+
     for (int i = 0; i < numberOfStrings; i++) {
         for (int j = 0; j < stringLengths[i]; j++) {
             returnString[currentPosition] = strings[i][j];
             currentPosition++;
         }
 
-        if (i < numberOfStrings - 1) {
+        if (i < numberOfStrings - 1 && delimiterLength > 0) {
             for (int k = 0; k < delimiterLength; k++) {
                 returnString[currentPosition] = delimiter[k];
                 currentPosition++;
             }
         }
+    }
+
+    if (end != 0) {
+        returnString[currentPosition] = end;
+        currentPosition++;
     }
 
     returnString[currentPosition] = '\0';
@@ -64,30 +78,37 @@ char *joinStrings(int numberOfStrings, char **strings, char *delimiter) {
     return returnString;
 }
 
-char *wrapStrings(int numberOfStrings, char **strings, char *delimiter, char beginning, char end) {
-    int stringLengths[numberOfStrings];
-    int delimiterLength = strlen(delimiter);
-    int totalStringLengths = 0;
+char *wrapElements(int numberOfElements, void **elements, anyToString elementToString, char *delimiter, char beginning, char end) {
+    size_t stringLengths[numberOfElements];
+    char *elementStrings[numberOfElements];
+    const size_t delimiterLength = delimiter == nullptr ? 0 : strlen(delimiter);
+    const size_t wrappingLength = (beginning != 0) + (end != 0);
 
-    for (int i = 0; i < numberOfStrings; i++) {
-        stringLengths[i] = strlen(strings[i]);
+    size_t totalStringLengths = 0;
+
+    for (int i = 0; i < numberOfElements; i++) {
+        elementStrings[i] = elementToString != nullptr ? elementToString(elements[i]) : elements[i];
+        stringLengths[i] = strlen(elementStrings[i]);
         totalStringLengths += stringLengths[i];
     }
 
-    int totalStringLength = totalStringLengths + 3 + delimiterLength*(numberOfStrings - 1);
+    const size_t totalStringLength = totalStringLengths + 1 + wrappingLength + delimiterLength * (numberOfElements - 1);
 
     char *returnString = calloc(totalStringLength, sizeof(char));
 
-    returnString[0] = beginning;
+    int currentPosition = 0;
+    if (beginning != 0) {
+        returnString[0] = beginning;
+        currentPosition++;
+    }
 
-    int currentPosition = 1;
-    for (int i = 0; i < numberOfStrings; i++) {
+    for (int i = 0; i < numberOfElements; i++) {
         for (int j = 0; j < stringLengths[i]; j++) {
-            returnString[currentPosition] = strings[i][j];
+            returnString[currentPosition] = elementStrings[i][j];
             currentPosition++;
         }
 
-        if (i < numberOfStrings - 1) {
+        if (i < numberOfElements - 1 && delimiterLength > 0) {
             for (int k = 0; k < delimiterLength; k++) {
                 returnString[currentPosition] = delimiter[k];
                 currentPosition++;
@@ -95,8 +116,11 @@ char *wrapStrings(int numberOfStrings, char **strings, char *delimiter, char beg
         }
     }
 
-    returnString[currentPosition] = end;
-    returnString[currentPosition+1] = '\0';
+    if (end != 0) {
+        returnString[currentPosition] = end;
+        currentPosition++;
+    }
+    returnString[currentPosition] = '\0';
 
     return returnString;
 }
