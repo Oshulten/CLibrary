@@ -1,8 +1,6 @@
 add_library(HomebrewLib hsla.c
-        homebrew.h
         array.c
         string.c
-        string.h
         linkedList.c)
 
 target_include_directories(HomebrewLib
