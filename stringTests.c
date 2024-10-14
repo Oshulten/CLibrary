@@ -29,7 +29,7 @@ void **doubleArrayToGenericPointer(int numberOfElements, double values[]) {
 void **stringArrayToGenericPointer(int numberOfElements, char *values[]) {
     void **elements = calloc(numberOfElements, sizeof(char*));
     for (int i = 0; i < numberOfElements; i++) {
-        elements[i] = &values[i];
+        elements[i] = values[i];
     }
     return elements;
 }
@@ -80,6 +80,14 @@ void wrapElements_should_cast_elements_to_strings_and_join_strings_with_delimite
             doubleArrayToGenericPointer(3, (double[]) { 1.0, 2.0, 3.0 } ),
             doubleToString,
             " - ", '*', '*'));
+
+    TEST_ASSERT_EQUAL_STRING(
+        "abc",
+        wrapElements(
+            3,
+            stringArrayToGenericPointer(3, (char*[]) { "a", "b", "c" }),
+            nullptr,
+            nullptr, 0, 0));
 }
 
 void runStringTests() {

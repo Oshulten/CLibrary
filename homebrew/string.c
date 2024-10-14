@@ -20,9 +20,6 @@ char *doubleToString(void *ptr) {
     return string;
 }
 
-char *stringToString(void *ptr) {
-    return (char*)ptr;
-}
 
 char *concatenateStrings(int numberOfStrings, char **strings) {
     return wrapStrings(numberOfStrings, strings, nullptr, 0, 0);
@@ -33,49 +30,15 @@ char *joinStrings(int numberOfStrings, char **strings, char *delimiter) {
 }
 
 char *wrapStrings(int numberOfStrings, char **strings, char *delimiter, char beginning, char end) {
-    size_t stringLengths[numberOfStrings];
-    const size_t delimiterLength = delimiter == nullptr ? 0 : strlen(delimiter);
-    const size_t wrappingLength = (beginning != 0) + (end != 0);
+    return wrapElements(numberOfStrings, strings, nullptr, delimiter, beginning, end);
+}
 
-    size_t totalStringLengths = 0;
+char *concatenateElements(int numberOfElements, void **elements, anyToString elementToString) {
+    return wrapElements(numberOfElements, elements, elementToString, nullptr, 0, 0);
+}
 
-    for (int i = 0; i < numberOfStrings; i++) {
-        stringLengths[i] = strlen(strings[i]);
-        totalStringLengths += stringLengths[i];
-    }
-
-    const size_t totalStringLength = totalStringLengths + 1 + wrappingLength + delimiterLength * (numberOfStrings - 1);
-
-    char *returnString = calloc(totalStringLength, sizeof(char));
-
-    int currentPosition = 0;
-    if (beginning != 0) {
-        returnString[0] = beginning;
-        currentPosition++;
-    }
-
-    for (int i = 0; i < numberOfStrings; i++) {
-        for (int j = 0; j < stringLengths[i]; j++) {
-            returnString[currentPosition] = strings[i][j];
-            currentPosition++;
-        }
-
-        if (i < numberOfStrings - 1 && delimiterLength > 0) {
-            for (int k = 0; k < delimiterLength; k++) {
-                returnString[currentPosition] = delimiter[k];
-                currentPosition++;
-            }
-        }
-    }
-
-    if (end != 0) {
-        returnString[currentPosition] = end;
-        currentPosition++;
-    }
-
-    returnString[currentPosition] = '\0';
-
-    return returnString;
+char *joinElements(int numberOfElements, void **elements, anyToString elementToString, char *delimiter) {
+    return wrapElements(numberOfElements, elements, elementToString, delimiter, 0, 0);
 }
 
 char *wrapElements(int numberOfElements, void **elements, anyToString elementToString, char *delimiter, char beginning, char end) {

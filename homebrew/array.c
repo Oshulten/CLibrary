@@ -4,9 +4,9 @@
 
 #include "array.h"
 
-#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "string.h"
 
 Array arrayCreate(int initialSize) {
     Array array = {
@@ -18,26 +18,8 @@ Array arrayCreate(int initialSize) {
     return array;
 }
 
-char *arrayToString(Array *array, char *(*toString)(void *)) {
-    static const char returnString[5000] = "";
-
-    strcat(returnString, "[");
-
-    for (int i = 0; i < array->numberOfElements; i++) {
-        char *valueString = toString(array->elements[i]);
-
-        strcat(returnString, valueString);
-
-        if (i < array->numberOfElements - 1) {
-            strcat(returnString, ", ");
-        }
-
-        free(valueString);
-    }
-
-    strcat(returnString, "]");
-
-    return returnString;
+char *arrayToString(Array *array, anyToString toString) {
+    return wrapElements(array->numberOfElements, array->elements, toString, ", ", '[', ']');
 }
 
 void arrayPush(Array *array, void *element) {

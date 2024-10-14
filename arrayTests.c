@@ -5,6 +5,7 @@
 #include "arrayTests.h"
 #include "unity.h"
 #include "array.h"
+#include "string.h"
 
 void arrayPush_should_store_the_pushed_elements_and_reallocate_size_automatically() {
     constexpr int numberOfElementsToPush = 22;
@@ -30,12 +31,12 @@ void arrayPush_should_store_the_pushed_elements_and_reallocate_size_automaticall
     }
 }
 
-// void arrayToString_should_return_correct_string() {
-//     Array array = arrayCreate(2);
-//     TEST_ASSERT_EQUAL_STRING(arrayToString(&array, intToString), "[]");
-//     arrayPush(&array, &(int){0});
-//     arrayPush(&array, &(int){1});
-// }
+void arrayToString_should_return_correct_string() {
+    Array array = arrayCreate(2);
+    TEST_ASSERT_EQUAL_STRING(arrayToString(&array, intToString), "[]");
+    arrayPush(&array, &(int){0});
+    arrayPush(&array, &(int){1});
+}
 
 void arrayGet_should_return_the_stored_elements() {
     constexpr int numberOfElementsToPush = 22;
@@ -84,7 +85,7 @@ void arraySet_should_change_the_data() {
 
 void runArrayTests() {
     RUN_TEST(arrayPush_should_store_the_pushed_elements_and_reallocate_size_automatically);
-    // RUN_TEST(arrayToString_should_return_correct_string);
-    // RUN_TEST(arrayGet_should_return_the_stored_elements);
-    // RUN_TEST(arraySet_should_change_the_data);
+    RUN_TEST(arrayToString_should_return_correct_string);
+    RUN_TEST(arrayGet_should_return_the_stored_elements);
+    RUN_TEST(arraySet_should_change_the_data);
 }
