@@ -1,10 +1,9 @@
 add_library(HomebrewLib hsla.c
         homebrew.h
-        tree.c
-        tree.h
         array.c
         string.c
-        string.h)
+        string.h
+        linkedList.c)
 
 target_include_directories(HomebrewLib
 INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}
